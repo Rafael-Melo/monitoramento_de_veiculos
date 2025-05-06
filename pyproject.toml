@@ -1,0 +1,18 @@
+[project]
+name = "monitoramento-de-veiculos"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Rafel-Melo",email = "rafael.vilas@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "flet (>=0.27.6,<0.28.0)",
+    "requests (>=2.32.3,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
