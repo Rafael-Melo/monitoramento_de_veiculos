@@ -22,5 +22,11 @@ def standardize_plate(placa):
     
     return ''.join(placa_corrigida)
 
-value = standardize_plate('4BC1S3A')
+def validate_plate(placa):
+    padrao_antigo = r'^[A-Z]{3}[0-9]{4}$' 
+    padrao_mercossul = r'^[A-Z]{3}[0-9][A-Z][0-9]{2}$'
+
+    return bool(re.match(padrao_antigo, placa) or re.match(padrao_mercossul, placa))
+
+value = validate_plate('A1C1Z34')
 print(value)

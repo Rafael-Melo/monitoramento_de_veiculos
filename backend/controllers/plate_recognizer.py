@@ -1,5 +1,6 @@
 import requests
-import flet as ft
+from pprint import pprint
+from base_plate_recognizer import standardize_plate, validate_plate
 
 API_KEY = '0f8e6ef80b5a78dc4ec10ccdb4764aa4d46df347'
 url = 'https://api.platerecognizer.com/v1/plate-reader/'
@@ -8,9 +9,6 @@ headers = {'Authorization': f'Token {API_KEY}'}
 # with open(r"C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\image1.jpg", "rb") as image_file:
 #     files = {'upload': image_file}
 #     response = requests.post(url, headers=headers, files=files)
-
-from pprint import pprint
-# pprint(response.json())
 
 def find_plate(caminho_imagem):
     try:
@@ -30,10 +28,14 @@ def find_plate(caminho_imagem):
     for result in results:
         original_plate = result.get('plate', '')
         box = result.get('box', {})
+        corrected_plate = standardize_plate(original_plate)
+        valid_plate = validate_plate(corrected_plate)
 
         detected_plates.append({
             "caminho_imagem": caminho_imagem,
             "placa_original": original_plate,
+            "placa_corrigida": corrected_plate,
+            "placa_valida": valid_plate,
             "xmin": box.get('xmin'),
             "ymin": box.get('ymin'),
             "xmax": box.get('xmax'),
@@ -42,6 +44,6 @@ def find_plate(caminho_imagem):
     
     return detected_plates
 
-fp = find_plate(r"C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\image1.jpg")
+fp = find_plate(r"C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\image2.jpg")
 
 pprint(fp)
