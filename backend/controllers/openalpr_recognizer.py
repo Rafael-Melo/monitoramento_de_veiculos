@@ -6,7 +6,6 @@ from backend.controllers.base_plate_recognizer import BasePlateRecognizer
 
 class OpenALPRDetector(BasePlateRecognizer):
 
-
     def find_plate(self, caminho_imagem):
         comando = [
             "docker",                       # comando principal do Docker
