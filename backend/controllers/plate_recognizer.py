@@ -1,6 +1,6 @@
 import requests
 from pprint import pprint
-from base_plate_recognizer import BasePlateRecognizer
+from backend.controllers.base_plate_recognizer import BasePlateRecognizer
 from pathlib import Path
 from dotenv import load_dotenv
 import os
@@ -30,16 +30,16 @@ class PlateRecognizerAPI(BasePlateRecognizer):
         detected_plates = []
 
         for result in results:
-            original_plate = result.get('plate', '')
+            placa_original = result.get('plate', '')
             box = result.get('box', {})
-            corrected_plate = self._standardize_plate(original_plate)
-            valid_plate = self._validate_plate(corrected_plate)
+            placa_corrigida = self._standardize_plate(placa_original)
+            placa_valida = self._validate_plate(placa_corrigida)
 
             detected_plates.append({
                 "caminho_imagem": caminho_imagem,
-                "placa_original": original_plate,
-                "placa_corrigida": corrected_plate,
-                "placa_valida": valid_plate,
+                "placa_original": placa_original,
+                "placa_corrigida": placa_corrigida,
+                "placa_valida": placa_valida,
                 "xmin": box.get('xmin'),
                 "ymin": box.get('ymin'),
                 "xmax": box.get('xmax'),
