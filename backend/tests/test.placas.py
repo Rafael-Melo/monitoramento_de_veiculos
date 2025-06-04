@@ -6,8 +6,12 @@ from pathlib import Path
 root = Path(__file__).parents[2]
 sys.path.append(str(root))
 
-from backend.controllers.base_plate_recognizer import standardize_plate, validate_plate
+from backend.controllers.base_plate_recognizer import BasePlateRecognizer
 
+class BPR(BasePlateRecognizer):
+    def find_plate(self):
+        pass
+    
 class TestPlateRecognizer(unittest.TestCase):
     def test_standardize_plate(self):
         teste_cases = [
@@ -43,9 +47,11 @@ class TestPlateRecognizer(unittest.TestCase):
             ("AB4I23", "ABA123"),           # 6 caracteres, A por 4, I por 1
         ]
 
+        isinstance = BPR()
+
         for placa_original, placa_esperada in teste_cases:
             with self.subTest(placa = placa_original):
-                self.assertEqual(standardize_plate(placa_original), placa_esperada)
+                self.assertEqual(isinstance._standardize_plate(placa_original), placa_esperada)
     
     def teste_validate_plate(self):
         valid_plates = [
@@ -68,13 +74,15 @@ class TestPlateRecognizer(unittest.TestCase):
             "ABID25", "ABA123",
         ]
 
+        isinstance = BPR()
+
         for placa in valid_plates:
             with self.subTest(placa = placa):
-                self.assertTrue(validate_plate(placa), msg=f'✅ {placa} deria ser valida')
+                self.assertTrue(isinstance._validate_plate(placa), msg=f'✅ {placa} deria ser valida')
         
         for placa in invalid_plates:
             with self.subTest(placa = placa):
-                self.assertFalse(validate_plate(placa), msg= f'❌ {placa} deria ser invalida')
+                self.assertFalse(isinstance._validate_plate(placa), msg= f'❌ {placa} deria ser invalida')
 
 if __name__ == '__main__':
     unittest.main()
