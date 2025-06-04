@@ -22,9 +22,13 @@ def find_plate(caminho_imagem):
     print("Diretório atual:", os.getcwd())
 
     if resultado.returncode !=0:
+        print("⚠️ Docker retornou saída vazia.")
         print(f'Erro na execução do Docker: {resultado.stderr}')
+        print("stderr:", resultado.stderr)
         return []
     
+    print("📦 Saída do Docker:")
+    print(resultado.stdout)
     # print(f"caminho: {os.getcwd()}")
     # print(resultado)
 
@@ -52,8 +56,48 @@ def find_plate(caminho_imagem):
     
     return placas_detectadas
 
+def find_plate_in_video(caminho_video, frame_interval=30):
+    import cv2
 
-placas = find_plate('/data/backend/assets/image1.jpg')
-print(placas)
+    resultados_video = []
+    video = cv2.VideoCapture(caminho_video)
+    frame_count = 0
+
+    if not video.isOpened():
+        print(f'Erro ao abrir o vídeo: {caminho_video}')
+        return []
+    
+    while True:
+        ret, frame = video.read()
+
+        if not ret:
+            break
+
+        if frame_count % frame_interval == 0:
+            caminho_frame = f'frame_temp_{frame_count}.jpg'
+            cv2.imwrite(caminho_frame, frame)
+            if not os.path.exists(caminho_frame):
+                print(f"❌ Frame não salvo: {caminho_frame}")
+            else:
+                print(f"✅ Frame salvo: {caminho_frame}")
+
+            docker_path = f'/data/{caminho_frame}'
+
+            deteccoes = find_plate(docker_path)
+
+            for d in deteccoes:
+                resultados_video.append(d)
+
+            os.remove(caminho_frame)
+    
+    video.release()
+    return resultados_video
+
+placas = find_plate_in_video(r"C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\5309381-hd_1920_1080_25fps.mp4")
+pprint(placas)
+
+
+# placas = find_plate('/data/backend/assets/image1.jpg')
+# print(placas)
 
 #  C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\h786poj.jpg
