@@ -98,6 +98,8 @@ class OpenALPRDetector(BasePlateRecognizer):
                     resultados_video.append(d)
 
                 os.remove(caminho_frame)
+            
+            frame_count += 1
         
         video.release()
         return resultados_video
