@@ -102,3 +102,9 @@ class OpenALPRDetector(BasePlateRecognizer):
         
         video.release()
         return resultados_video
+
+# detector = OpenALPRDetector()
+# placas = detector.find_plate_in_video(
+#     r'C:\Users\rmelo\Documents\TESTES PYTHON\FLET\monitoramento_de_veiculos\backend\assets\video1.mp4'
+# )
+# pprint(placas)
