@@ -6,7 +6,7 @@ from abc import ABC
 class BasePlateRecognizer(ABC): 
 
     @staticmethod
-    def standardize_plate(placa):
+    def _standardize_plate(placa):
         placa = re.sub(r'[^A-Z0-9]', '', placa.upper())
 
         equivalencia_letras = {'0': 'O', '1': 'I', '4': 'A', '5': 'S', '8': 'B', '2': 'Z'}
@@ -29,7 +29,7 @@ class BasePlateRecognizer(ABC):
         return ''.join(placa_corrigida)
 
     @staticmethod
-    def validate_plate(placa):
+    def _validate_plate(placa):
         padrao_antigo = r'^[A-Z]{3}[0-9]{4}$' 
         padrao_mercossul = r'^[A-Z]{3}[0-9][A-Z][0-9]{2}$'
 
