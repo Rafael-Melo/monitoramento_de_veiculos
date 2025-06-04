@@ -1,5 +1,5 @@
 import re
-from abc import ABC
+from abc import ABC, abstractmethod
 
 # ABC = Essa classe serve apenas como modelo.
 # Ela não deve ser instanciada diretamente, apenas estendida.
@@ -34,3 +34,7 @@ class BasePlateRecognizer(ABC):
         padrao_mercossul = r'^[A-Z]{3}[0-9][A-Z][0-9]{2}$'
 
         return bool(re.match(padrao_antigo, placa) or re.match(padrao_mercossul, placa))
+
+    @abstractmethod
+    def find_plate(self):
+        pass
