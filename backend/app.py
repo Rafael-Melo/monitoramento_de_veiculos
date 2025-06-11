@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from pathlib import Path
 from dotenv import load_dotenv
 import uuid
+import os
 from backend.controllers.openalpr_recognizer import OpenALPRDetector
 from backend.controllers.plate_recognizer import PlateRecognizerAPI
 import mimetypes
@@ -9,7 +10,18 @@ import mimetypes
 dotenv_path = Path(__file__).parents[1].joinpath('.env').as_posix()
 load_dotenv(dotenv_path=dotenv_path)
 
+from flask_migrate import Migrate
+from backend.models import db
+from backend.models.database_model import VeiculoDetectado
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+db.init_app(app)
+migrate = Migrate(
+    app=app,
+    db=db,
+    directory=Path(__file__).parents[0].joinpath('migrations').as_posix()
+)
 
 @app.route('/detectar-placa', methods=['POST'])
 def detectar_placa():
